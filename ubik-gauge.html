@@ -1,0 +1,81 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+Ubik Gauge Widget.
+
+##### Example
+
+    <ubik-gauge label="Acceleration" value="100" thresold="70"></ubik-gauge>
+
+@element ubik-gauge
+@blurb Ubik Gauge widget  
+@status alpha
+@homepage http://ubikee.github.io/ubik-gauge
+-->
+<polymer-element name="ubik-gauge" attributes="label value thresold normalColor alertColor">
+	
+	<template>
+		<style>
+			div {
+				min-width : 80px;
+			}
+			
+			label {
+				margin-top : 10px;
+				color : #7D8B8D
+			}
+		</style>
+		<div flex vertical layout center-justified>
+			<svg id="chart" viewBox="0 0 100 50" preserveAspectRatio="xMidYMid meet"></svg>
+			<label self-center>{{label}}</label>
+		</div>
+	</template>
+
+	<script>
+		Polymer({
+		
+			label    : '',
+			value    : 0,
+			thresold : 0,
+			
+			normalColor : '#2F4A5E',
+			alertColor  : '#F00',
+			
+			ready : function () {
+				
+					var color = this.value > this.thresold ? this.normalColor : this.alertColor;
+				
+					this.arc(100, 50, 30, '#DEE2E7');
+					this.arc(this.value, 50, 30, color);
+					this.arc(this.thresold, 29, 28, '#F00');
+			},
+		
+			arc : function(percentage, rad1, rad2, color) {
+				
+				var svgns = "http://www.w3.org/2000/svg";
+				var path = document.createElementNS(svgns, "path");
+					
+				var unit = (Math.PI *2) / 100;    
+				var angle = (percentage * unit - 0.001) / 2;
+				
+				var x1 = 50 - rad1;
+				var x2 = 50 - rad1 * Math.cos(angle);
+				var y2 = 50 - rad1 * Math.sin(angle);
+				var x3 = 50 - rad2 * Math.cos(angle);
+				var y3 = 50 - rad2 * Math.sin(angle);
+				var x4 = 50 - rad2;
+				
+				var d = " M " + x1   + ", 50 " +
+						" A " + rad1 + "," + rad1 + " 0 0 1 " + x2 + "," + y2 +
+						" L " + x3   + "," + y3 + 
+						" A " + rad2 + "," + rad2 + " 0 0 0 " + x4 + ", 50" +
+						" L " + x1   + ",50";
+					
+				path.setAttribute("d", d);
+				path.setAttribute("fill", color);
+				this.$.chart.appendChild(path);
+			}
+		})
+	</script>
+
+</polymer-element>

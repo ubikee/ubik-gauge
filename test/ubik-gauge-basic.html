@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>ubik-gauge</title>
+
+  <script src="../../platform/platform.js"></script>
+  <link rel="import" href="../../polymer-test-tools/tools.html">
+  <script src="../../polymer-test-tools/htmltest.js"></script>
+
+  <!-- Step 1: import the element to test -->
+  <link rel="import" href="../ubik-gauge.html">
+
+</head>
+<body>
+
+  <ubik-gauge></ubik-gauge>
+
+  <script>
+
+    document.addEventListener('polymer-ready', function() {
+      // Test a property
+      var myEl = document.querySelector('ubik-gauge');
+      assert.equal(myEl.author, 'Dimitri Glazkov');
+
+      // Test a method
+      var hello = myEl.sayHello();
+      assert.equal(hello, 'ubik-gauge says, Hello World!');
+      var greetings = myEl.sayHello('greetings Earthlings');
+      assert.equal(greetings, 'ubik-gauge says, greetings Earthlings');
+
+      // Test an event
+      myEl.addEventListener('ubik-gauge-lasers-success', function(event) {
+        assert.equal(event.detail.sound, 'Pew pew pew!');
+        // IMPORTANT:
+        // Make sure to call done() at the end of every test suite!
+        done();
+      });
+      myEl.fireLasers();
+    });
+
+  </script>
+
+</body>
+</html>

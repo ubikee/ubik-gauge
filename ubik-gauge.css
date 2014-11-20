@@ -1,4 +1,12 @@
 :host {
   display: block;
-  color: red;
+}
+
+div {
+	min-width : 80px;
+}
+
+label {
+	margin-top : 10px;
+	color : #7D8B8D
 }

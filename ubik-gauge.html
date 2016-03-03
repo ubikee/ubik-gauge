@@ -1,0 +1,120 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="./bower_components/polymer/polymer.html">
+
+<!--
+General Gauge
+
+Example:
+
+    <ubik-gauge value="50"></ubik-gauge>
+
+@demo demo/index.html
+@hero hero.svg
+-->
+
+<dom-module id="ubik-gauge">
+
+    <template>
+
+        <style>
+            :host {
+                display: block;
+                box-sizing: border-box;
+            }
+        </style>
+
+        <div>
+            <svg id="chart" viewBox="0 0 100 {{height}}" preserveAspectRatio="xMidYMid meet">
+                <text text-anchor="middle" x="52" y="58" style="font : 1.2em sans-serif;">
+                    {{value}}
+                    <tspan style="font: 0.5em sans-serif;">%</tspan>
+                </text>
+            </svg>
+    
+            <label>{{label}}</label>
+        </div>
+    </template>
+
+    <script>
+        (function() {
+        'use strict';
+        Polymer({
+            is: 'ubik-gauge',
+            properties: {
+                
+                /**
+                 * gauge value from 0 to 100
+                 */
+                value: {
+                    type: Number,
+                    value: 50,
+                    notify: true
+                },
+          
+                /**
+                 * gauge treshold
+                 */
+                treshold: {
+                    type: Number,
+                    value: 0,
+                    notify: true
+                },
+          
+                /**
+                 * Semicircular gauge if true
+                 */
+                semicircle: {
+                    type: Boolean,
+                    value: false
+                }
+            },
+            
+            // Element Lifecycle
+            ready : function () {
+                var radius = 50 - (5/2);
+                this._arcx(100,           5, radius, '#DEE2E7');
+                this._arcx(this.treshold, 5, radius, '#F99');
+                this._arcx(this.value,    5, radius, 'red');
+            },
+
+            // internal functions
+            _arcx : function( percentage, width, rad1, color) {
+
+                var svgns = "http://www.w3.org/2000/svg";
+                var path = document.createElementNS(svgns, "path");
+                var unit = (Math.PI *2) / 100;
+                var angle = (percentage * unit - 0.001);
+                var large_arc_flag = percentage > 50 ? 1 : 0;
+        
+                if (this.semicircle) {
+                    angle = angle / 2;
+                    large_arc_flag = 0;
+                }
+
+                var x1 = 50 - rad1;
+                var x2 = 50 - rad1 * Math.cos(angle);
+                var y2 = 50 - rad1 * Math.sin(angle);
+
+                var d = " M " + x1   + ", 50 " + " A " + rad1 + "," + rad1 + " 0 " + large_arc_flag + " 1 " + x2 + "," + y2;
+
+                path.setAttribute("d", d);
+                path.setAttribute("fill", 'none');
+                path.setAttribute("stroke", color);
+                path.setAttribute("stroke-width", 5);
+                path.setAttribute("stroke-linecap", "round");
+        
+                this.$.chart.appendChild(path);
+            }            
+        });
+        })();
+  </script>
+</dom-module>

@@ -85,7 +85,7 @@
       },
 
       tresholdChanged : function (newValue, oldValue) {
-        this._resizeArc(this._valueArc, newValue);
+        this._resizeArc(this._tresholdArc, newValue);
       },
 
       // Internal
@@ -102,7 +102,7 @@
       _resizeArc: function (arc, percentage) {
         var radius = 50-(5/2);
         if (arc)
-          path.setAttribute("d", this._calculateArc(percentage, radius));
+          path.setAttribute("d", this._calculatePath(percentage, radius));
       },
 
       _newPath : function (percentage, radius, width, color) {

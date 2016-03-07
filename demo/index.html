@@ -15,12 +15,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <title>ubik-gauge2 Demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="../ubik-gauge.html">
+
+    <style is="custom-style">
+
+      /* Will be prevented from affecting local DOM of Polymer elements */
+      * {
+        box-sizing: border-box;
+      }
+
+      /* Use the :root selector to define custom properties and mixins */
+      /* at the document level  */
+      :root {
+        --ubik-gauge-label-color: red;
+      }
+    </style>
+
   </head>
   <body unresolved>
 
     <p>An example of <code>&lt;ubik-gauge&gt;</code>:</p>
 
-    <ubik-gauge value="40" semicircle></ubik-gauge>
+    <ubik-gauge label="completed" value="30" unit="%" treshold="60" colors='["#F00","#FCC","#EEE"]'></ubik-gauge>
 
     <script>
       var seedElement = document.querySelector('ubik-gauge');

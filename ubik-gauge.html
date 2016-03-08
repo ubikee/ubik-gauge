@@ -9,29 +9,23 @@
                 justify-content: center;
             }
             
-            .content {
-                display: flex;
-                flex: 1;
-            }
-            
             svg {
                 flex: 1;
             }
             
             text {
-                fill: red;
                 fill-opacity: 0.8;
                 font: 1em sans-serif;
             }
         </style>
-        <div class="content">
-            <svg id="chart" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
-                <text id="label" text-anchor="middle" x="50" y="55">
-                    [[value]]
-                    <tspan>[[unit]]</tspan>
-                </text>
-            </svg>
-        </div>
+
+        <svg id="chart" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <text id="label" text-anchor="middle" x="50" y="55">
+                [[value]]
+                <tspan>[[unit]]</tspan>
+            </text>
+        </svg>
+
     </template>
 
     <script>
@@ -45,7 +39,7 @@
                 properties: {
 
                     /**
-                     * this is the value the gauge shows
+                     * 
                      */
                     value: {
                         type: Number

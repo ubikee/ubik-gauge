@@ -33,3 +33,8 @@ Import the link into your main page
     <li>colors: RGB colors array: [ [value], [treshold], [base], [alarm] ]</li>
 </ul>
 
+License
+-------
+MIT: http://mit-license.org/
+
+Copyright 2016 Ernesto Roldan aka [ubikee](http://ubikee.com)

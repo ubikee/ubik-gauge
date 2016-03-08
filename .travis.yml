@@ -19,7 +19,7 @@ addons:
     packages:
       - google-chrome-stable
       - g++-4.8
-  sauce_connect: true
+  sauce_connect:
     username: "jeroldan"
     access_key: "254b05c4-2d30-4cb6-9665-94fb3284867d"
 script:

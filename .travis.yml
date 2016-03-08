@@ -20,6 +20,8 @@ addons:
       - google-chrome-stable
       - g++-4.8
   sauce_connect: true
+  username: "jeroldan"
+  access_key: "254b05c4-2d30-4cb6-9665-94fb3284867d"
 script:
   - xvfb-run wct
   - "if [ \"${TRAVIS_PULL_REQUEST}\" = \"false\" ]; then wct -s 'default'; fi"

@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ubikee/ubik-gauge.svg?branch=master)](https://travis-ci.org/ubikee/ubik-gauge)
+
 ## &lt;ubik-gauge&gt;
 
 Circular gauge indicator

@@ -1,61 +1,33 @@
-# ubik-gauge2
+## &lt;ubik-gauge&gt;
 
-An element providing a starting point for your own reusable Polymer elements.
+Circular gauge indicator
 
+`<ubik-gauge>` display a simple circular gauge.
 
-## Dependencies
+### Install
 
-Element dependencies are managed via [Bower](http://bower.io/). You can
-install that via:
+#### With bower
+Install the component to your bower.json
 
-    npm install -g bower
+    bower install ubik-gauge --save
 
-Then, go ahead and download the element's dependencies:
+Import the link into your main page
 
-    bower install
+```html
+<link rel="import" href="bower_components/ubik-gauge.html">
+```
 
+### Usage
 
-## Playing With Your Element
+```html
+<ubik-gauge value="30" unit="%" treshold="60" colors='["#0F0","#FCC","#EEE", "#F00"]'></ubik-gauge>
+```
+#### Attributes
+<ul>
+    <li>value: this is the value the gauge shows from 0 to 100</li>
+    <li>treshold: treshold that should fire an alarm when the value exceedes it.</li>
+    <li>unit: units name to be displayed next to the value</li>
+    <li>semicircle: toggles gauge shape from circle to semicircle</li>
+    <li>colors: RGB colors array: [ [value], [treshold], [base], [alarm] ]</li>
+</ul>
 
-If you wish to work on your element in isolation, we recommend that you use
-[Polyserve](https://github.com/PolymerLabs/polyserve) to keep your element's
-bower dependencies in line. You can install it via:
-
-    npm install -g polyserve
-
-And you can run it via:
-
-    polyserve
-
-Once running, you can preview your element at
-`http://localhost:8080/components/ubik-gauge2/`, where `ubik-gauge2` is the name of the directory containing it.
-
-
-## Testing Your Element
-
-Simply navigate to the `/test` directory of your element to run its tests. If
-you are using Polyserve: `http://localhost:8080/components/ubik-gauge2/test/`
-
-### web-component-tester
-
-The tests are compatible with [web-component-tester](https://github.com/Polymer/web-component-tester).
-Install it via:
-
-    npm install -g web-component-tester
-
-Then, you can run your tests on _all_ of your local browsers via:
-
-    wct
-
-#### WCT Tips
-
-`wct -l chrome` will only run tests in chrome.
-
-`wct -p` will keep the browsers alive after test runs (refresh to re-run).
-
-`wct test/some-file.html` will test only the files you specify.
-
-
-## Yeoman support
-
-If you'd like to use Yeoman to scaffold your element that's possible. The official [`generator-polymer`](https://github.com/yeoman/generator-polymer) generator has a [`seed`](https://github.com/yeoman/generator-polymer#seed) subgenerator.

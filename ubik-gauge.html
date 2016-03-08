@@ -2,141 +2,170 @@
 
 <dom-module id="ubik-gauge">
 
-  <template>
-    <style>
-      :host {
-        display: flex;
-        box-sizing: border-box;
-        justify-content: center;
-      }
-      label {
-        color : var(--ubik-gauge-label-color)
-      }
-    </style>
-    <div style="flex: 1;">
-      <svg id="chart" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
-        <text text-anchor="middle" x="52" y="58" style="font : 0.5em sans-serif;">
-          [[value]]
-          <tspan style="font: 0.5em sans-serif;">[[unit]]</tspan>
-        </text>
-      </svg>
-      <label>[[label]]</label>
-    </div>
-  </template>
+    <template>
+        <style>
+            :host {
+                display: flex;
+                justify-content: center;
+            }
+        </style>
+        <div style="flex: 1;">
+            <svg id="chart" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+                <text id="label" text-anchor="middle" x="50" y="55">
+                    [[value]]
+                    <tspan>[[unit]]</tspan>
+                </text>
+            </svg>
+        </div>
+    </template>
 
-  <script>
-  (function() {
-    'use strict';
+    <script>
+        (function () {
+            'use strict';
 
-    Polymer({
+            Polymer({
 
-      is: 'ubik-gauge',
+                is: 'ubik-gauge',
 
-      properties: {
+                properties: {
 
-        label: {
-          type: String,
-          value: '',
-          notify: true
-        },
+                    /**
+                     * this is the value the gauge shows
+                     */
+                    value: {
+                        type: Number
+                        , value: 50
+                        , notify: true
+                        , observer: '_valueChanged'
+                    },
 
-        value: {
-          type: String,
-          value: '50.0',
-          notify: true,
-          observer : ['valueChanged']
-        },
+                    /**
+                     * units name to be displayed next to the value
+                     */
+                    unit: {
+                        type: String
+                        , value: '%'
+                    },
 
-        unit: {
-          type: String,
-          value: '%'
-        },
+                    /**
+                     * treshold that should fire an alarm when the value exceedes it.
+                     */
+                    treshold: {
+                        type: Number
+                        , value: 80
+                        , notify: true
+                        , observer: '_tresholdChanged'
+                    },
 
-        treshold: {
-          type: Number,
-          value: 80,
-          notify: true,
-          observer : ['tresholdChanged']
-        },
+                    /**
+                     * toggles gauge shape fromm circle to semicircle
+                     */
+                    semicircle: {
+                        type: Boolean
+                        , value: false
+                        , notify: true
+                        , observer: '_semicircleChanged'
+                    },
 
-        semicircle: {
-          type: Boolean,
-          value: false
-        },
+                    colors: {
+                        type: Array
+                        , value: function () {
+                            return ['#0F0', '#FAA', '#EEE', '#F00']
+                        }
+                        , notify: true
+                    }
+                },
 
-        colors: {
-          type: Array,
-          value: function () { return ['#F00','#FAA','#EEE']},
-          notify: true
-        }
-      },
+                // Life Cycle
 
-      ready : function () {
-        var radius = 50-(5/2);
-        this._createArc(100,5,radius, this.colors[2]);
-        this._tresholdArc = this._createArc(this.treshold, 5, radius, this.colors[1]);
-        this._valueArc    = this._createArc(this.value,    5, radius, this.colors[0]);
-      },
+                ready: function () {
+                    var radius = 50 - (5 / 2);
+                    this._createArc(100, 5, radius, this.colors[2]);
+                    this._tresholdArc = this._createArc(this.treshold, 5, radius, this.colors[1]);
+                    this._valueArc = this._createArc(this.value, 5, radius, this.colors[0]);
+                    this._checkTreshold(this.value, this.treshold, this.colors);
+                },
 
-      // Observers
+                // Observers
 
-      valueChanged : function (newValue, oldValue) {
-        this._resizeArc(this._valueArc, newValue);
-      },
+                observers: ['_checkTreshold(value, treshold, colors)'],
 
-      tresholdChanged : function (newValue, oldValue) {
-        this._resizeArc(this._tresholdArc, newValue);
-      },
+                _valueChanged: function (newValue, oldValue) {
+                    this._resizeArc(this._valueArc, newValue);
+                },
 
-      // Internal
+                _tresholdChanged: function (newValue, oldValue) {
+                    this._resizeArc(this._tresholdArc, newValue);
+                },
 
-      _valueArc : null,
-      _tresholdArc : null,
+                _semicircleChanged: function (newValue) {
+                    if (newValue) {
+                        this.$.chart.setAttribute('viewBox', '0 0 100 50');
+                        this.$.label.setAttribute('y', '48');
+                    }
+                },
 
-      _createArc : function (percentage, width, rad1, color) {
-          var path = this._newPath(percentage, rad1, width, color);
-          this.$.chart.appendChild(path);
-          return path;
-      },
+                _checkTreshold: function (value, treshold, colors) {
+                    if (value > treshold)
+                        this._colorizeArc(this._valueArc, 'red');
+                },
 
-      _resizeArc: function (arc, percentage) {
-        var radius = 50-(5/2);
-        if (arc)
-          path.setAttribute("d", this._calculatePath(percentage, radius));
-      },
+                // Internal
 
-      _newPath : function (percentage, radius, width, color) {
-        var svgns = "http://www.w3.org/2000/svg";
-        var path = document.createElementNS(svgns, "path");
-        path.setAttribute("d", this._calculatePath(percentage, radius));
-        path.setAttribute("fill", 'none');
-        path.setAttribute("stroke", color);
-        path.setAttribute("stroke-width", width);
-        path.setAttribute("stroke-linecap", "round");
-        return path;
-      },
+                _valueArc: null,
 
-      _calculatePath : function(percentage, rad1) {
+                _tresholdArc: null,
 
-        var unit = (Math.PI *2) / 100;
-        var angle = (percentage * unit - 0.001);
-        var large_arc_flag = percentage > 50 ? 1 : 0;
+                _createArc: function (percentage, width, rad1, color) {
+                    var path = this._newPath(percentage, rad1, width, color);
+                    this.$.chart.appendChild(path);
+                    return path;
+                },
 
-        if (this.semicircle) {
-            angle = angle / 2;
-            large_arc_flag = 0;
-        }
+                _colorizeArc: function (arc, color) {
+                    console.log(arc)
+                    if (arc)
+                        arc.setAttribute("stroke", color);
+                },
 
-        var x1 = 50 - rad1;
-        var x2 = 50 - rad1 * Math.cos(angle);
-        var y2 = 50 - rad1 * Math.sin(angle);
+                _resizeArc: function (arc, percentage) {
+                    var radius = 50 - (5 / 2);
+                    if (arc)
+                        arc.setAttribute("d", this._calculatePath(percentage, radius));
+                },
 
-        var d = " M " + x1   + ", 50 " + " A " + rad1 + "," + rad1 + " 0 " + large_arc_flag + " 1 " + x2 + "," + y2;
+                _newPath: function (percentage, radius, width, color) {
+                    var svgns = "http://www.w3.org/2000/svg";
+                    var path = document.createElementNS(svgns, "path");
+                    path.setAttribute("d", this._calculatePath(percentage, radius));
+                    path.setAttribute("fill", 'none');
+                    path.setAttribute("stroke", color);
+                    path.setAttribute("stroke-width", width);
+                    path.setAttribute("stroke-linecap", "round");
+                    return path;
+                },
 
-        return d;
-      }
+                _calculatePath: function (percentage, rad1) {
 
-    });
-  })();
-  </script>
+                    var unit = (Math.PI * 2) / 100;
+                    var angle = (percentage * unit - 0.001);
+                    var large_arc_flag = percentage > 50 ? 1 : 0;
+
+                    if (this.semicircle) {
+                        angle = angle / 2;
+                        large_arc_flag = 0;
+                    }
+
+                    var x1 = 50 - rad1;
+                    var x2 = 50 - rad1 * Math.cos(angle);
+                    var y2 = 50 - rad1 * Math.sin(angle);
+
+                    var d = " M " + x1 + ", 50 " + " A " + rad1 + "," + rad1 + " 0 " + large_arc_flag + " 1 " + x2 + "," + y2;
+
+                    return d;
+                }
+
+            });
+        })();
+    </script>
 </dom-module>

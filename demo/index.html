@@ -9,7 +9,8 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>ubik-gauge2 Demo</title>
@@ -17,29 +18,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <link rel="import" href="../ubik-gauge.html">
 
     <style is="custom-style">
-
-      /* Will be prevented from affecting local DOM of Polymer elements */
-      * {
-        box-sizing: border-box;
-      }
-
-      /* Use the :root selector to define custom properties and mixins */
-      /* at the document level  */
-      :root {
-        --ubik-gauge-label-color: red;
-      }
+        /* Will be prevented from affecting local DOM of Polymer elements */
+        
+        * {
+            box-sizing: border-box;
+        }
+        /* Use the :root selector to define custom properties and mixins */
+        /* at the document level  */
+        
+        :root {}
     </style>
 
-  </head>
-  <body unresolved>
+</head>
+
+<body unresolved>
 
     <p>An example of <code>&lt;ubik-gauge&gt;</code>:</p>
 
-    <ubik-gauge label="completed" value="30" unit="%" treshold="60" colors='["#F00","#FCC","#EEE"]'></ubik-gauge>
+    <ubik-gauge id="gauge1" value="30" unit="%" treshold="60" colors='["#0F0","#FCC","#EEE"]'></ubik-gauge>
+    <ubik-gauge id="gauge2" value="30" unit="%" treshold="60" colors='["#0F0","#FCC","#EEE"]' semicircle></ubik-gauge>
+    <ubik-gauge id="gauge3" value="70" unit="%" treshold="50" colors='["#0F0","#FCC","#EEE", "#F00"]'></ubik-gauge>
 
     <script>
-      var seedElement = document.querySelector('ubik-gauge');
+        var seedElement = document.querySelector('ubik-gauge');
     </script>
 
-  </body>
+</body>
+
 </html>

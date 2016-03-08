@@ -29,20 +29,70 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         :root {}
     </style>
 
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        
+        main {
+            flex: 1;
+        }
+        
+        article {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 20px;
+        }
+        
+        ubik-gauge {
+            flex: 1;
+        }
+        
+        article>div {
+            flex: 1;
+        }
+    </style>
 </head>
 
 <body unresolved>
-
-    <p>An example of <code>&lt;ubik-gauge&gt;</code>:</p>
-
-    <ubik-gauge id="gauge1" value="30" unit="%" treshold="60" colors='["#0F0","#FCC","#EEE"]'></ubik-gauge>
-    <ubik-gauge id="gauge2" value="30" unit="%" treshold="60" colors='["#0F0","#FCC","#EEE"]' semicircle></ubik-gauge>
-    <ubik-gauge id="gauge3" value="70" unit="%" treshold="50" colors='["#0F0","#FCC","#EEE", "#F00"]'></ubik-gauge>
+    <header>
+        <p>Examples of <code>&lt;ubik-gauge&gt;</code>:</p>
+    </header>
+    <main>
+        <article>
+            <ubik-gauge id="gauge1" value="30" unit="%" treshold="60" colors='["#0F0","#FCC","#EEE", "#F00"]'></ubik-gauge>
+            <div></div>
+        </article>
+        <article>
+            <ubik-gauge id="gauge2" value="30" unit="%" treshold="60" colors='["#0F0","#FCC","#EEE", "#F00"]' semicircle></ubik-gauge>
+            <div></div>
+        </article>
+        <article>
+            <ubik-gauge id="gauge3" value="10" unit="%" treshold="50" colors='["#0F0","#FCC","#EEE", "#F00"]'></ubik-gauge>
+            <div></div>
+        </article>
+        <article>
+    </main>
+    <footer>footer
+    </footer>
 
     <script>
-        var seedElement = document.querySelector('ubik-gauge');
-    </script>
+        var gauge1 = document.querySelector('#gauge1');
+        var gauge2 = document.querySelector('#gauge2');
+        var gauge3 = document.querySelector('#gauge3');
 
+        setInterval(random(gauge1), 1000);
+        setInterval(random(gauge2), 500);
+        setInterval(random(gauge3), 800);
+
+        function random(gauge) {
+            return function () {
+                gauge.value = Math.floor((Math.random() * 100) + 1);
+            }
+        }
+    </script>
 </body>
 
 </html>

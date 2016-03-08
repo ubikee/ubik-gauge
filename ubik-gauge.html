@@ -8,8 +8,23 @@
                 display: flex;
                 justify-content: center;
             }
+            
+            .content {
+                display: flex;
+                flex: 1;
+            }
+            
+            svg {
+                flex: 1;
+            }
+            
+            text {
+                fill: red;
+                fill-opacity: 0.8;
+                font: 1em sans-serif;
+            }
         </style>
-        <div style="flex: 1;">
+        <div class="content">
             <svg id="chart" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
                 <text id="label" text-anchor="middle" x="50" y="55">
                     [[value]]
@@ -67,6 +82,9 @@
                         , observer: '_semicircleChanged'
                     },
 
+                    /**
+                     * RGB colors array: [ <value>, <treshold>, <base>, <alarm> ]
+                     */
                     colors: {
                         type: Array
                         , value: function () {
@@ -83,12 +101,12 @@
                     this._createArc(100, 5, radius, this.colors[2]);
                     this._tresholdArc = this._createArc(this.treshold, 5, radius, this.colors[1]);
                     this._valueArc = this._createArc(this.value, 5, radius, this.colors[0]);
-                    this._checkTreshold(this.value, this.treshold, this.colors);
+                    this._tresholdExceeded(this.value, this.treshold, this.colors);
                 },
 
                 // Observers
 
-                observers: ['_checkTreshold(value, treshold, colors)'],
+                observers: ['_tresholdExceeded(value, treshold, colors)'],
 
                 _valueChanged: function (newValue, oldValue) {
                     this._resizeArc(this._valueArc, newValue);
@@ -105,9 +123,9 @@
                     }
                 },
 
-                _checkTreshold: function (value, treshold, colors) {
-                    if (value > treshold)
-                        this._colorizeArc(this._valueArc, 'red');
+                _tresholdExceeded: function (value, treshold, colors) {
+                    var color = value > treshold ? colors[3] : colors[0];
+                    this._colorizeArc(this._valueArc, color);
                 },
 
                 // Internal
@@ -123,7 +141,6 @@
                 },
 
                 _colorizeArc: function (arc, color) {
-                    console.log(arc)
                     if (arc)
                         arc.setAttribute("stroke", color);
                 },

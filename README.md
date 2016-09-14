@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/ubikee/ubik-gauge.svg?branch=master)](https://travis-ci.org/ubikee/ubik-gauge)
+![Deps Status](https://david-dm.org/ubikee/ubik-gauge.svg)
 
 ## &lt;ubik-gauge&gt;
 
